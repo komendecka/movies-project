@@ -4,14 +4,13 @@ import requests
 
 API_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNWY2MzJjZmQwOTMyN2VjYWU4ODczYWFhZjU3MWM0YyIsInN1YiI6IjY0OGFkNjViYzNjODkxMDBhZTRmNTc5YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.apHBqfH6oqvC3HwaGfjgJYzuZS-vsCx_5V5RjF_9yeo"
 
+
+
 def get_movies(how_many, list_type):
     data = get_movies_list(list_type)
-    return [data["results"][random.randint(0, 19)] for _ in range(how_many)]
-
-
-# def get_movies(how_many, list_type):
-#     data = get_movies_list(list_type)
-#     return data["results"][:how_many]
+    movies = data["results"]
+    random.shuffle(movies)
+    return movies[:how_many]
 
 
 def get_movies_list(list_type):
@@ -22,6 +21,7 @@ def get_movies_list(list_type):
     response = requests.get(endpoint, headers=headers)
     response.raise_for_status()
     return response.json()
+
 
 
 

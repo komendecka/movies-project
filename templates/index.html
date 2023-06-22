@@ -42,8 +42,8 @@
     {% set valid_list_types = ['now_playing', 'popular', 'top_rated', 'upcoming'] %}
     {% for list in valid_list_types %}
     <button type="button" class="{% if list==current_list %}active{% endif %} btn btn-outline-info"
-            onclick="window.location.href='{{ url_for('homepage', list_type=list) }}'">{{list|capitalize}}
-    </button>
+        onclick="window.location.href='{{ url_for('homepage', list_type=list) }}'">{{list|capitalize}}</button>
+
     {% endfor %}
     {% if list_type not in valid_list_types %}
     {% set list_type = 'popular' %}
