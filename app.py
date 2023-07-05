@@ -4,7 +4,7 @@ import random
 
 app = Flask(__name__)
 
-
+LIST_TYPES = ['top_rated', 'upcoming', 'popular', 'now_playing']
 
 @app.route('/')
 def homepage():

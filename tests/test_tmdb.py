@@ -1,5 +1,5 @@
 import tmdb_client
-import app
+from app import app, LIST_TYPES
 import pytest
 from unittest.mock import Mock
 
@@ -52,4 +52,28 @@ def test_call_tmdb_api_for_content(monkeypatch):
     endpoint = "movie/popular"  # Przykładowy endpoint
     api = tmdb_client.call_tmdb_api(endpoint)
     assert api == mock_api
+
+
+def test_homepage(monkeypatch):
+    api_mock = Mock(return_value={'results': []})
+    monkeypatch.setattr("tmdb_client.call_tmdb_api", api_mock)
+
+    with app.test_client() as client:
+        response = client.get('/')
+        assert response.status_code == 200
+        api_mock.assert_called_once_with('movie/popular')
+
+
+
+
+@pytest.mark.parametrize("list_type", LIST_TYPES)
+def test_homepage_with_list_types(monkeypatch, list_type):
+    api_mock = Mock(return_value={'results': []})
+    monkeypatch.setattr("tmdb_client.call_tmdb_api", api_mock)
+
+    with app.test_client() as client:
+        response = client.get(f'/?list_type={list_type}')
+        assert response.status_code == 200
+        api_mock.assert_called_once_with(f'movie/{list_type}')
+
 
