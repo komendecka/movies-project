@@ -4,24 +4,26 @@ import requests
 
 API_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNWY2MzJjZmQwOTMyN2VjYWU4ODczYWFhZjU3MWM0YyIsInN1YiI6IjY0OGFkNjViYzNjODkxMDBhZTRmNTc5YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.apHBqfH6oqvC3HwaGfjgJYzuZS-vsCx_5V5RjF_9yeo"
 
+def call_tmdb_api(endpoint):
+   full_url = f"https://api.themoviedb.org/3/{endpoint}"
+   headers = {
+       "Authorization": f"Bearer {API_TOKEN}"
+   }
+   response = requests.get(full_url, headers=headers)
+   response.raise_for_status()
+   return response.json()
+
 
 
 def get_movies(how_many, list_type):
-    data = get_movies_list(list_type)
+    data = call_tmdb_api(f"movie/{list_type}")
     movies = data["results"]
     random.shuffle(movies)
     return movies[:how_many]
 
 
 def get_movies_list(list_type):
-    endpoint = f"https://api.themoviedb.org/3/movie/{list_type}"
-    headers = {
-        "Authorization": f"Bearer {API_TOKEN}"
-    }
-    response = requests.get(endpoint, headers=headers)
-    response.raise_for_status()
-    return response.json()
-
+   return call_tmdb_api(f"movie/{list_type}")
 
 
 
